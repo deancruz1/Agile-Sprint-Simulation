@@ -39,19 +39,19 @@ public class C206_CaseStudy {
 					viewAllUser(userList);
 				
 				else if (itemType == ITEM_TYPE_SCHOOL)
-					viewAllUser(userList);
+					viewAllUser(userList); // Will update later
 
 				else if (itemType == ITEM_TYPE_MENU)
-					viewAllUser(userList);
+					viewAllUser(userList); // Will update later
 					
 				else if (itemType == ITEM_TYPE_ORDER)
-					viewAllUser(userList);
-					
+					viewAllUser(userList); // Will update later
+					 
 				else if (itemType == ITEM_TYPE_PAYMENT)
-					viewAllUser(userList);
+					viewAllUser(userList); // Will update later
 					
 				else if (itemType == ITEM_TYPE_VENDOR)
-					viewAllUser(userList);
+					viewAllUser(userList); // Will update later
 					
 				else
 					System.out.println("Invalid Type.");
@@ -61,6 +61,10 @@ public class C206_CaseStudy {
 				int itemType = Helper.readInt("Enter option to select item type > ");
 				
 				if (itemType == ITEM_TYPE_USER) {
+					// Add a User
+					User user = inputUser();
+					addUser(userList, user);
+					System.out.println("User added.");
 					
 				} else if (itemType == ITEM_TYPE_SCHOOL) {
 					
@@ -161,7 +165,33 @@ public class C206_CaseStudy {
 	
 	
 	//================================= Option 2 Add (CRUD - Create) =================================
+	public static User inputUser() {		
+		int id = Helper.readInt("Enter id > ");
+		String name = Helper.readString("Enter your name > ");
+		int age = Helper.readInt("Enter age > ");
+		String role = Helper.readString("Enter role to child (Parent/Guardian) > ");
+
+		User user = new User(id, name, age, role);
+		return user;
+		
+	}
 	
+	public static void addUser(ArrayList<User> userList, User user) {
+		User item;
+		
+		for(int i = 0; i < userList.size(); i++) {
+			item = userList.get(i);
+			if (item.getId() == user.getId())
+				return;
+		}
+		
+		if ((user.getId() == 0) || (user.getName().isEmpty())) {
+			return;
+		}
+		
+		userList.add(user);
+		
+	}
 	
 	
 	

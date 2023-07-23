@@ -32,6 +32,7 @@ public class C206_CaseStudy {
 			option = Helper.readInt("Enter an option > ");
 
 			if (option == OPTION_VIEW) {
+				setHeader("VIEW");
 				itemTypeMenu();
 				int itemType = Helper.readInt("Enter option to select item type > ");
 				
@@ -57,6 +58,7 @@ public class C206_CaseStudy {
 					System.out.println("Invalid Type.");
 				
 			} else if (option == OPTION_ADD) {
+				setHeader("ADD");
 				itemTypeMenu();
 				int itemType = Helper.readInt("Enter option to select item type > ");
 				
@@ -80,22 +82,29 @@ public class C206_CaseStudy {
 					System.out.println("Invalid Type.");
 				
 			} else if (option == OPTION_DELETE) {
+				setHeader("DELETE");
 				itemTypeMenu();
 				int itemType = Helper.readInt("Enter option to select item type > ");
 				
-				if (itemType == ITEM_TYPE_USER) {
+				if (itemType == ITEM_TYPE_USER)
+					deleteUser(userList);
 					
-				} else if (itemType == ITEM_TYPE_SCHOOL) {
+				else if (itemType == ITEM_TYPE_SCHOOL)
+					deleteUser(userList); // Will update later
+
+				else if (itemType == ITEM_TYPE_MENU)
+					deleteUser(userList); // Will update later
 					
-				} else if (itemType == ITEM_TYPE_MENU) {
+				else if (itemType == ITEM_TYPE_ORDER)
+					deleteUser(userList); // Will update later
 					
-				} else if (itemType == ITEM_TYPE_ORDER) {
+				else if (itemType == ITEM_TYPE_PAYMENT)
+					deleteUser(userList); // Will update later
+				
+				else if (itemType == ITEM_TYPE_VENDOR)
+					deleteUser(userList); // Will update later
 					
-				} else if (itemType == ITEM_TYPE_PAYMENT) {
-					
-				} else if (itemType == ITEM_TYPE_VENDOR) {
-					
-				} else
+				else
 					System.out.println("Invalid Type.");
 				
 			} else if (option == OPTION_QUIT) 
@@ -149,7 +158,7 @@ public class C206_CaseStudy {
 		String output = "";
 		
 		for (int i = 0; i < userList.size(); i++) {
-			output += String.format("%-84s \n", userList.get(i).toString());
+			output += String.format("%s \n", userList.get(i).toString());
 		}
 		
 		return output;
@@ -196,7 +205,36 @@ public class C206_CaseStudy {
 	
 	
 	//================================= Option 3 Delete (CRUD - Delete) =================================
+	public static void deleteUser(ArrayList<User> userList) {
+		viewAllUser(userList);
+		int id = Helper.readInt("Enter ID of user to be deleted > ");
+		
+		Boolean isDeleted = doDeleteUser(userList, id);
+		
+		if (isDeleted == false)
+			System.out.println("Invalid ID");
+		else
+			System.out.println("User ID: " + id + " deleted");
+	}
+	
+	public static boolean doDeleteUser(ArrayList<User> userList, int id) {
+		
+		boolean isDeleted = false;
 
+		if (id == 0)
+			return false;
+		
+		for (int i = 0; i < userList.size(); i++) {
+					
+			int arrayListId = userList.get(i).getId();
+			if (id == arrayListId) {
+				userList.remove(i);
+				isDeleted = true;
+			}
+		}
+		
+		return isDeleted;
+	}
 		
 }
 

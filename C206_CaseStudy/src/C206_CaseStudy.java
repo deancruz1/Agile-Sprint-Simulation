@@ -2,8 +2,20 @@ import java.util.ArrayList;
 
 public class C206_CaseStudy {
 
+	// Add static variables
+	private static final int OPTION_VIEW = 1;
+	private static final int OPTION_ADD = 2;
+	private static final int OPTION_DELETE = 3;
+	private static final int OPTION_QUIT = 4;
+	
+	private static final int ITEM_TYPE_USER = 1;
+	private static final int ITEM_TYPE_SCHOOL = 2;
+	private static final int ITEM_TYPE_MENU = 3;
+	private static final int ITEM_TYPE_ORDER = 4;
+	private static final int ITEM_TYPE_PAYMENT = 5;
+	private static final int ITEM_TYPE_VENDOR = 6;
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		// Initialize ArrayList for each object
 		ArrayList<User> userList = new ArrayList<User>();
@@ -14,24 +26,75 @@ public class C206_CaseStudy {
 		
 		int option = 0;
 
-		while (option != 4) {
+		while (option != OPTION_QUIT) {
 
 			menu();
 			option = Helper.readInt("Enter an option > ");
 
-			if (option == 1) {
+			if (option == OPTION_VIEW) {
 				itemTypeMenu();
+				int itemType = Helper.readInt("Enter option to select item type > ");
 				
+				if (itemType == ITEM_TYPE_USER)
+					viewAllUser(userList);
 				
-			} else if (option == 2) {
+				else if (itemType == ITEM_TYPE_SCHOOL)
+					viewAllUser(userList);
+
+				else if (itemType == ITEM_TYPE_MENU)
+					viewAllUser(userList);
+					
+				else if (itemType == ITEM_TYPE_ORDER)
+					viewAllUser(userList);
+					
+				else if (itemType == ITEM_TYPE_PAYMENT)
+					viewAllUser(userList);
+					
+				else if (itemType == ITEM_TYPE_VENDOR)
+					viewAllUser(userList);
+					
+				else
+					System.out.println("Invalid Type.");
+				
+			} else if (option == OPTION_ADD) {
 				itemTypeMenu();
+				int itemType = Helper.readInt("Enter option to select item type > ");
 				
+				if (itemType == ITEM_TYPE_USER) {
+					
+				} else if (itemType == ITEM_TYPE_SCHOOL) {
+					
+				} else if (itemType == ITEM_TYPE_MENU) {
+					
+				} else if (itemType == ITEM_TYPE_ORDER) {
+					
+				} else if (itemType == ITEM_TYPE_PAYMENT) {
+					
+				} else if (itemType == ITEM_TYPE_VENDOR) {
+					
+				} else
+					System.out.println("Invalid Type.");
 				
-			} else if (option == 3) {
+			} else if (option == OPTION_DELETE) {
 				itemTypeMenu();
+				int itemType = Helper.readInt("Enter option to select item type > ");
 				
+				if (itemType == ITEM_TYPE_USER) {
+					
+				} else if (itemType == ITEM_TYPE_SCHOOL) {
+					
+				} else if (itemType == ITEM_TYPE_MENU) {
+					
+				} else if (itemType == ITEM_TYPE_ORDER) {
+					
+				} else if (itemType == ITEM_TYPE_PAYMENT) {
+					
+				} else if (itemType == ITEM_TYPE_VENDOR) {
+					
+				} else
+					System.out.println("Invalid Type.");
 				
-			} else if (option == 4) 
+			} else if (option == OPTION_QUIT) 
 				System.out.println("Bye!");
 			else
 				System.out.println("Invalid option.");
@@ -76,6 +139,34 @@ public class C206_CaseStudy {
 		}
 		return avail;
 	}
+	
+	//================================= Option 1 View (CRUD - Read) =================================
+	public static String retrieveAllUser(ArrayList<User> userList) {
+		String output = "";
+		
+		for (int i = 0; i < userList.size(); i++) {
+			output += String.format("%-84s \n", userList.get(i).toString());
+		}
+		
+		return output;
+	}
+	
+	public static void viewAllUser(ArrayList<User> userList) {
+		setHeader("USER LIST");
+		String output = String.format("%-5s %-29s %-10s %-10s\n", "ID", "NAME", "AGE","ROLE");
+		 output += retrieveAllUser(userList);	
+		System.out.println(output);
+	}
+	
+	
+	
+	//================================= Option 2 Add (CRUD - Create) =================================
+	
+	
+	
+	
+	//================================= Option 3 Delete (CRUD - Delete) =================================
+
 		
 }
 

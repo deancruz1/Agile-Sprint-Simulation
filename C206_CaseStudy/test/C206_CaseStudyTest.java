@@ -8,9 +8,11 @@ import org.junit.Test;
 
 public class C206_CaseStudyTest {
 	private User u1, u2;
+	private School s1, s2;
 	
 	private ArrayList<User> userList;
-
+	private ArrayList<School> schoolList;
+	
 	public C206_CaseStudyTest() {
 		super();
 	}
@@ -20,8 +22,11 @@ public class C206_CaseStudyTest {
 		// prepare test data		
 		u1 = new User(1, "Peter Tan", 32, "Parent");
 		u2 = new User(2, "Mary Lim", 35, "Guardian");
-		
 		userList = new ArrayList<User>();
+		
+		s1 = new School(1, "Republic Poly", "Woodlands");
+		s2 = new School(2, "NUS", "Kent Ridge");
+		schoolList = new ArrayList<School>();
 	}
 
 	@After
@@ -29,6 +34,10 @@ public class C206_CaseStudyTest {
 		u1 = null;
 		u2 = null;
 		userList = null;
+		
+		s1 = null;
+		s2 = null;
+		schoolList = null;
 	}
 
 	@Test
@@ -58,7 +67,7 @@ public class C206_CaseStudyTest {
 		testOutput = String.format("%-5s %-29s %-10s %-11s\n", "1", "Peter Tan", "32", "Parent");
 		testOutput += String.format("%-5s %-29s %-10s %-11s\n", "2", "Mary Lim", "35", "Guardian");
 	
-		assertEquals("Test that ViewAllCamcorderlist", testOutput, allUser);
+		assertEquals("Test that ViewAllUserlist", testOutput, allUser);
 		
 	}
 	
@@ -82,7 +91,7 @@ public class C206_CaseStudyTest {
 	@Test
 	public void testDoDeleteUser() {
 		//boundary
-		assertNotNull("test if there is valid Camcorder arraylist to loan from", userList);
+		assertNotNull("test if there is valid User arraylist to loan from", userList);
 		
 		C206_CaseStudy.addUser(userList, u1);
 		// normal
@@ -100,6 +109,72 @@ public class C206_CaseStudyTest {
 		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
 		//error condition
 		ok = C206_CaseStudy.doDeleteUser(userList, 3 );
+		assertFalse("Test that non-existing item is NOT ok to delete?", ok);
+		
+	}
+	
+	@Test
+	public void testRetrieveAllSchool() {
+		// Test if Item list is not null but empty -boundary
+		assertNotNull("Test if there is valid School arraylist to retrieve item", schoolList);
+		
+		//test if the list of schools retrieved from the CaseStudy is empty - boundary
+		String allSchool = C206_CaseStudy.retrieveAllSchool(schoolList);
+		String testOutput = "";
+		assertEquals("Check that ViewAllSchoolList", testOutput, allSchool);
+		
+		//Given an empty list, after adding 2 items, test if the size of the list is 2 - normal
+		C206_CaseStudy.addSchool(schoolList, s1);
+		C206_CaseStudy.addSchool(schoolList, s2);
+		assertEquals("Test that User ArrayList size is 2", 2, schoolList.size());
+		
+		//test if the expected output string same as the list of users retrieved from the CaseStudy	
+		allSchool = C206_CaseStudy.retrieveAllSchool(schoolList);
+		testOutput = String.format("%-5s %-29s %-11s\n", "1", "Republic Poly", "Woodlands");
+		testOutput += String.format("%-5s %-29s %-11s\n", "2", "NUS", "Kent Ridge");
+	
+		assertEquals("Test that ViewAllSchoollist", testOutput, allSchool);
+		
+	}
+	
+	@Test
+	public void testAddSchool() {
+		// Item list is not null, so that can add a new item - boundary
+		assertNotNull("Check if there is valid User arraylist to add to", schoolList);
+		//Given an empty list, after adding 1 item, the size of the list is 1 - normal
+		//The item just added is as same as the first item of the list
+		C206_CaseStudy.addSchool(schoolList, s1);
+		assertEquals("Check that School arraylist size is 1", 1, schoolList.size());
+		assertSame("Check that School is added", s1, schoolList.get(0));
+		
+		//Add another item. test The size of the list is 2? -normal
+		//The item just added is as same as the second item of the list
+		C206_CaseStudy.addSchool(schoolList, s2);
+		assertEquals("Check that School arraylist size is 2", 2, schoolList.size());
+		assertSame("Check that School is added", s2, schoolList.get(1));
+	}
+	
+	@Test
+	public void testDoDeleteSchool() {
+		//boundary
+		assertNotNull("test if there is valid School arraylist to loan from", schoolList);
+		
+		C206_CaseStudy.addSchool(schoolList, s1);
+		// normal
+		Boolean ok = C206_CaseStudy.doDeleteSchool(schoolList, 1);
+		assertTrue("Test if user can be deleted?", ok);
+		// normal
+		C206_CaseStudy.addSchool(schoolList, s2);	
+		ok = C206_CaseStudy.doDeleteSchool(schoolList, 2);
+		assertTrue("Test that second item is ok to delete?", ok);
+		//error condition
+		ok = C206_CaseStudy.doDeleteSchool(schoolList, 1);
+		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
+		//error condition
+		ok = C206_CaseStudy.doDeleteSchool(schoolList, 2);
+		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
+		//error condition
+		ok = C206_CaseStudy.doDeleteSchool(schoolList, 3 );
 		assertFalse("Test that non-existing item is NOT ok to delete?", ok);
 		
 	}

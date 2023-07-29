@@ -19,10 +19,14 @@ public class C206_CaseStudy {
 		
 		// Initialize ArrayList for each object
 		ArrayList<User> userList = new ArrayList<User>();
+		ArrayList<School> schoolList = new ArrayList<School>();
 		
 		// Add initial objects to ArrayList
 		userList.add(new User(1, "Peter Tan", 32, "Parent"));
 		userList.add(new User(2, "Mary Lim", 35, "Guardian"));
+		
+		schoolList.add(new School(1, "Republic Poly", "Woodlands"));
+		schoolList.add(new School(2, "NUS", "Kent Ridge"));
 		
 		int option = 0;
 
@@ -40,7 +44,7 @@ public class C206_CaseStudy {
 					viewAllUser(userList);
 				
 				else if (itemType == ITEM_TYPE_SCHOOL)
-					viewAllUser(userList); // Will update later
+					viewAllSchool(schoolList);
 
 				else if (itemType == ITEM_TYPE_MENU)
 					viewAllUser(userList); // Will update later
@@ -69,6 +73,10 @@ public class C206_CaseStudy {
 					System.out.println("User added.");
 					
 				} else if (itemType == ITEM_TYPE_SCHOOL) {
+					// Add a school
+					School school = inputSchool();
+					addSchool(schoolList, school);
+					System.out.println("School added.");
 					
 				} else if (itemType == ITEM_TYPE_MENU) {
 					
@@ -90,7 +98,7 @@ public class C206_CaseStudy {
 					deleteUser(userList);
 					
 				else if (itemType == ITEM_TYPE_SCHOOL)
-					deleteUser(userList); // Will update later
+					deleteSchool(schoolList);
 
 				else if (itemType == ITEM_TYPE_MENU)
 					deleteUser(userList); // Will update later
@@ -171,6 +179,22 @@ public class C206_CaseStudy {
 		System.out.println(output);
 	}
 	
+	public static void viewAllSchool(ArrayList<School> schoolList) {
+		setHeader("USER LIST");
+		String output = String.format("%-5s %-29s %-10s\n", "ID", "NAME", "ADDRESS");
+		 output += retrieveAllSchool(schoolList);	
+		System.out.println(output);
+	}
+	
+	public static String retrieveAllSchool(ArrayList<School> schoolList) {
+		String output = "";
+		
+		for (int i = 0; i < schoolList.size(); i++) {
+			output += String.format("%s \n", schoolList.get(i).toString());
+		}
+		
+		return output;
+	}
 	
 	
 	//================================= Option 2 Add (CRUD - Create) =================================
@@ -202,6 +226,32 @@ public class C206_CaseStudy {
 		
 	}
 	
+	public static School inputSchool() {		
+		int id = Helper.readInt("Enter id > ");
+		String name = Helper.readString("Enter school's name > ");
+		String address = Helper.readString("Enter school's address > ");
+
+		School school = new School(id, name, address);
+		return school;
+		
+	}
+	
+	public static void addSchool(ArrayList<School> schoolList, School school) {
+		School item;
+		
+		for(int i = 0; i < schoolList.size(); i++) {
+			item = schoolList.get(i);
+			if (item.getId() == school.getId())
+				return;
+		}
+		
+		if ((school.getId() == 0) || (school.getName().isEmpty())) {
+			return;
+		}
+		
+		schoolList.add(school);
+		
+	}
 	
 	
 	//================================= Option 3 Delete (CRUD - Delete) =================================
@@ -229,6 +279,37 @@ public class C206_CaseStudy {
 			int arrayListId = userList.get(i).getId();
 			if (id == arrayListId) {
 				userList.remove(i);
+				isDeleted = true;
+			}
+		}
+		
+		return isDeleted;
+	}
+	
+	public static void deleteSchool(ArrayList<School> schoolList) {
+		viewAllSchool(schoolList);
+		int id = Helper.readInt("Enter ID of school to be deleted > ");
+		
+		Boolean isDeleted = doDeleteSchool(schoolList, id);
+		
+		if (isDeleted == false)
+			System.out.println("Invalid ID");
+		else
+			System.out.println("School ID: " + id + " deleted");
+	}
+	
+	public static boolean doDeleteSchool(ArrayList<School> schoolList, int id) {
+		
+		boolean isDeleted = false;
+
+		if (id == 0)
+			return false;
+		
+		for (int i = 0; i < schoolList.size(); i++) {
+					
+			int arrayListId = schoolList.get(i).getId();
+			if (id == arrayListId) {
+				schoolList.remove(i);
 				isDeleted = true;
 			}
 		}

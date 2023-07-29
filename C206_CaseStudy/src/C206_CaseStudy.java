@@ -20,6 +20,7 @@ public class C206_CaseStudy {
 		// Initialize ArrayList for each object
 		ArrayList<User> userList = new ArrayList<User>();
 		ArrayList<School> schoolList = new ArrayList<School>();
+		ArrayList<Menu> menuList = new ArrayList<Menu>();
 		
 		// Add initial objects to ArrayList
 		userList.add(new User(1, "Peter Tan", 32, "Parent"));
@@ -27,6 +28,9 @@ public class C206_CaseStudy {
 		
 		schoolList.add(new School(1, "Republic Poly", "Woodlands"));
 		schoolList.add(new School(2, "NUS", "Kent Ridge"));
+		
+		menuList.add(new Menu(1, "Diet Menu", "Salad, Bread with Eggs", 150));
+		menuList.add(new Menu(2, "Full Lunch Menu", "Chicken Thigh with rice", 400));
 		
 		int option = 0;
 
@@ -47,7 +51,7 @@ public class C206_CaseStudy {
 					viewAllSchool(schoolList);
 
 				else if (itemType == ITEM_TYPE_MENU)
-					viewAllUser(userList); // Will update later
+					viewAllMenu(menuList);
 					
 				else if (itemType == ITEM_TYPE_ORDER)
 					viewAllUser(userList); // Will update later
@@ -79,6 +83,10 @@ public class C206_CaseStudy {
 					System.out.println("School added.");
 					
 				} else if (itemType == ITEM_TYPE_MENU) {
+					// Add a menu
+					Menu menu = inputMenu();
+					addMenu(menuList, menu);
+					System.out.println("School added.");
 					
 				} else if (itemType == ITEM_TYPE_ORDER) {
 					
@@ -101,7 +109,7 @@ public class C206_CaseStudy {
 					deleteSchool(schoolList);
 
 				else if (itemType == ITEM_TYPE_MENU)
-					deleteUser(userList); // Will update later
+					deleteMenu(menuList);
 					
 				else if (itemType == ITEM_TYPE_ORDER)
 					deleteUser(userList); // Will update later
@@ -179,13 +187,6 @@ public class C206_CaseStudy {
 		System.out.println(output);
 	}
 	
-	public static void viewAllSchool(ArrayList<School> schoolList) {
-		setHeader("USER LIST");
-		String output = String.format("%-5s %-29s %-10s\n", "ID", "NAME", "ADDRESS");
-		 output += retrieveAllSchool(schoolList);	
-		System.out.println(output);
-	}
-	
 	public static String retrieveAllSchool(ArrayList<School> schoolList) {
 		String output = "";
 		
@@ -196,6 +197,29 @@ public class C206_CaseStudy {
 		return output;
 	}
 	
+	public static void viewAllSchool(ArrayList<School> schoolList) {
+		setHeader("SCHOOL LIST");
+		String output = String.format("%-5s %-29s %-10s\n", "ID", "NAME", "ADDRESS");
+		 output += retrieveAllSchool(schoolList);	
+		System.out.println(output);
+	}
+		
+	public static String retrieveAllMenu(ArrayList<Menu> menuList) {
+		String output = "";
+		
+		for (int i = 0; i < menuList.size(); i++) {
+			output += String.format("%s \n", menuList.get(i).toString());
+		}
+		
+		return output;
+	}
+	
+	public static void viewAllMenu(ArrayList<Menu> menuList) {
+		setHeader("MENU LIST");
+		String output = String.format("%-5s %-29s %-30s %-10s\n", "ID", "NAME", "FOOD ITEMS", "CALORIES");
+		 output += retrieveAllMenu(menuList);	
+		System.out.println(output);
+	}
 	
 	//================================= Option 2 Add (CRUD - Create) =================================
 	public static User inputUser() {		
@@ -250,6 +274,34 @@ public class C206_CaseStudy {
 		}
 		
 		schoolList.add(school);
+		
+	}
+	
+	public static Menu inputMenu() {		
+		int id = Helper.readInt("Enter id > ");
+		String name = Helper.readString("Enter menu name > ");
+		String foodItem = Helper.readString("Enter the food items in menu > ");
+		int calories = Helper.readInt("Enter the total amount of calories in menu > ");
+		
+		Menu menu = new Menu(id, name, foodItem, calories);
+		return menu;
+		
+	}
+	
+	public static void addMenu(ArrayList<Menu> menuList, Menu menu) {
+		Menu item;
+		
+		for(int i = 0; i < menuList.size(); i++) {
+			item = menuList.get(i);
+			if (item.getId() == menu.getId())
+				return;
+		}
+		
+		if ((menu.getId() == 0) || (menu.getName().isEmpty())) {
+			return;
+		}
+		
+		menuList.add(menu);
 		
 	}
 	
@@ -310,6 +362,37 @@ public class C206_CaseStudy {
 			int arrayListId = schoolList.get(i).getId();
 			if (id == arrayListId) {
 				schoolList.remove(i);
+				isDeleted = true;
+			}
+		}
+		
+		return isDeleted;
+	}
+	
+	public static void deleteMenu(ArrayList<Menu> menuList) {
+		viewAllMenu(menuList);
+		int id = Helper.readInt("Enter ID of menu to be deleted > ");
+		
+		Boolean isDeleted = doDeleteMenu(menuList, id);
+		
+		if (isDeleted == false)
+			System.out.println("Invalid ID");
+		else
+			System.out.println("Menu ID: " + id + " deleted");
+	}
+	
+	public static boolean doDeleteMenu(ArrayList<Menu> menuList, int id) {
+		
+		boolean isDeleted = false;
+
+		if (id == 0)
+			return false;
+		
+		for (int i = 0; i < menuList.size(); i++) {
+					
+			int arrayListId = menuList.get(i).getId();
+			if (id == arrayListId) {
+				menuList.remove(i);
 				isDeleted = true;
 			}
 		}

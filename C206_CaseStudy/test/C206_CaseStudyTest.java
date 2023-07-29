@@ -10,10 +10,12 @@ public class C206_CaseStudyTest {
 	private User u1, u2;
 	private School s1, s2;
 	private Menu m1, m2;
+	private Order o1, o2;
 	
 	private ArrayList<User> userList;
 	private ArrayList<School> schoolList;
 	private ArrayList<Menu> menuList;
+	private ArrayList<Order> orderList;
 	
 	public C206_CaseStudyTest() {
 		super();
@@ -33,6 +35,10 @@ public class C206_CaseStudyTest {
 		m1 = new Menu(1, "Diet Menu", "Salad, Bread with Eggs", 7.5);
 		m2 = new Menu(2, "Full Lunch Menu", "Chicken Thigh with rice", 10);
 		menuList = new ArrayList<Menu>();
+		
+		o1 = new Order(1, "Lunch Order (5 pax)", 50);
+		o2 = new Order(2, "Diet Order(10 pax)", 75);
+		orderList = new ArrayList<Order>();
 	}
 
 	@After
@@ -48,6 +54,10 @@ public class C206_CaseStudyTest {
 		m1 = null;
 		m2 = null;
 		menuList = null;
+		
+		o1 = null;
+		o2 = null;
+		orderList = null;
 	}
 
 	@Test
@@ -101,7 +111,7 @@ public class C206_CaseStudyTest {
 	@Test
 	public void testDoDeleteUser() {
 		//boundary
-		assertNotNull("test if there is valid User arraylist to loan from", userList);
+		assertNotNull("test if there is valid User arraylist to delete from", userList);
 		
 		C206_CaseStudy.addUser(userList, u1);
 		// normal
@@ -150,7 +160,7 @@ public class C206_CaseStudyTest {
 	@Test
 	public void testAddSchool() {
 		// Item list is not null, so that can add a new item - boundary
-		assertNotNull("Check if there is valid User arraylist to add to", schoolList);
+		assertNotNull("Check if there is valid School arraylist to add to", schoolList);
 		//Given an empty list, after adding 1 item, the size of the list is 1 - normal
 		//The item just added is as same as the first item of the list
 		C206_CaseStudy.addSchool(schoolList, s1);
@@ -167,7 +177,7 @@ public class C206_CaseStudyTest {
 	@Test
 	public void testDoDeleteSchool() {
 		//boundary
-		assertNotNull("test if there is valid School arraylist to loan from", schoolList);
+		assertNotNull("test if there is valid School arraylist to delete from", schoolList);
 		
 		C206_CaseStudy.addSchool(schoolList, s1);
 		// normal
@@ -194,7 +204,7 @@ public class C206_CaseStudyTest {
 		// Test if Item list is not null but empty -boundary
 		assertNotNull("Test if there is valid Menu arraylist to retrieve item", menuList);
 		
-		//test if the list of schools retrieved from the CaseStudy is empty - boundary
+		//test if the list of menus retrieved from the CaseStudy is empty - boundary
 		String allMenu = C206_CaseStudy.retrieveAllMenu(menuList);
 		String testOutput = "";
 		assertEquals("Check that ViewAllMenuList", testOutput, allMenu);
@@ -209,14 +219,14 @@ public class C206_CaseStudyTest {
 		testOutput = String.format("%-5s %-29s %-30s %-11s\n", "1", "Diet Menu", "Salad, Bread with Eggs", "7.50");
 		testOutput += String.format("%-5s %-29s %-30s %-11s\n", "2", "Full Lunch Menu", "Chicken Thigh with rice", "10.00");
 	
-		assertEquals("Test that ViewAllSchoollist", testOutput, allMenu);
+		assertEquals("Test that ViewAllMenulist", testOutput, allMenu);
 		
 	}
 	
 	@Test
 	public void testAddMenu() {
 		// Item list is not null, so that can add a new item - boundary
-		assertNotNull("Check if there is valid User arraylist to add to", menuList);
+		assertNotNull("Check if there is valid Menu arraylist to add to", menuList);
 		//Given an empty list, after adding 1 item, the size of the list is 1 - normal
 		//The item just added is as same as the first item of the list
 		C206_CaseStudy.addMenu(menuList, m1);
@@ -226,14 +236,14 @@ public class C206_CaseStudyTest {
 		//Add another item. test The size of the list is 2? -normal
 		//The item just added is as same as the second item of the list
 		C206_CaseStudy.addMenu(menuList, m2);
-		assertEquals("Check that School arraylist size is 2", 2, menuList.size());
-		assertSame("Check that School is added", m2, menuList.get(1));
+		assertEquals("Check that Menu arraylist size is 2", 2, menuList.size());
+		assertSame("Check that Menu is added", m2, menuList.get(1));
 	}
 	
 	@Test
 	public void testDoDeleteMenu() {
 		//boundary
-		assertNotNull("test if there is valid Menu arraylist to loan from", menuList);
+		assertNotNull("test if there is valid Menu arraylist to delete from", menuList);
 		
 		C206_CaseStudy.addMenu(menuList, m1);
 		// normal
@@ -251,6 +261,72 @@ public class C206_CaseStudyTest {
 		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
 		//error condition
 		ok = C206_CaseStudy.doDeleteMenu(menuList, 3 );
+		assertFalse("Test that non-existing item is NOT ok to delete?", ok);
+		
+	}
+	
+	@Test
+	public void testRetrieveAllOrder() {
+		// Test if Item list is not null but empty -boundary
+		assertNotNull("Test if there is valid Menu arraylist to retrieve item", orderList);
+		
+		//test if the list of orders retrieved from the CaseStudy is empty - boundary
+		String allOrder = C206_CaseStudy.retrieveAllOrder(orderList);
+		String testOutput = "";
+		assertEquals("Check that ViewAllMenuList", testOutput, allOrder);
+		
+		//Given an empty list, after adding 2 items, test if the size of the list is 2 - normal
+		C206_CaseStudy.addOrder(orderList, o1);
+		C206_CaseStudy.addOrder(orderList, o2);
+		assertEquals("Test that Order ArrayList size is 2", 2, orderList.size());
+		
+		//test if the expected output string same as the list of users retrieved from the CaseStudy	
+		allOrder = C206_CaseStudy.retrieveAllOrder(orderList);
+		testOutput = String.format("%-5s %-29s %-11s\n", "1", "Lunch Order (5 pax)", "50.00");
+		testOutput += String.format("%-5s %-29s %-11s\n", "2", "Diet Order(10 pax)", "75.00");
+	
+		assertEquals("Test that ViewAllOrderlist", testOutput, allOrder);
+		
+	}
+	
+	@Test
+	public void testAddOrder() {
+		// Item list is not null, so that can add a new item - boundary
+		assertNotNull("Check if there is valid Order arraylist to add to", orderList);
+		//Given an empty list, after adding 1 item, the size of the list is 1 - normal
+		//The item just added is as same as the first item of the list
+		C206_CaseStudy.addOrder(orderList, o1);
+		assertEquals("Check that Order arraylist size is 1", 1, orderList.size());
+		assertSame("Check that SOrder is added", o1, orderList.get(0));
+		
+		//Add another item. test The size of the list is 2? -normal
+		//The item just added is as same as the second item of the list
+		C206_CaseStudy.addOrder(orderList, o2);
+		assertEquals("Check that Order arraylist size is 2", 2, orderList.size());
+		assertSame("Check that Order is added", o2, orderList.get(1));
+	}
+	
+	@Test
+	public void testDoDeleteOrder() {
+		//boundary
+		assertNotNull("test if there is valid Menu arraylist to delete from", orderList);
+		
+		C206_CaseStudy.addOrder(orderList, o1);
+		// normal
+		Boolean ok = C206_CaseStudy.doDeleteOrder(orderList, 1);
+		assertTrue("Test if order can be deleted?", ok);
+		// normal
+		C206_CaseStudy.addOrder(orderList, o2);	
+		ok = C206_CaseStudy.doDeleteOrder(orderList, 2);
+		assertTrue("Test that second item is ok to delete?", ok);
+		//error condition
+		ok = C206_CaseStudy.doDeleteOrder(orderList, 1);
+		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
+		//error condition
+		ok = C206_CaseStudy.doDeleteOrder(orderList, 2);
+		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
+		//error condition
+		ok = C206_CaseStudy.doDeleteOrder(orderList, 3 );
 		assertFalse("Test that non-existing item is NOT ok to delete?", ok);
 		
 	}

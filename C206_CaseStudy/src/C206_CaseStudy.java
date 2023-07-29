@@ -21,6 +21,7 @@ public class C206_CaseStudy {
 		ArrayList<User> userList = new ArrayList<User>();
 		ArrayList<School> schoolList = new ArrayList<School>();
 		ArrayList<Menu> menuList = new ArrayList<Menu>();
+		ArrayList<Order> orderList = new ArrayList<Order>();
 		
 		// Add initial objects to ArrayList
 		userList.add(new User(1, "Peter Tan", 32, "Parent"));
@@ -31,6 +32,9 @@ public class C206_CaseStudy {
 		
 		menuList.add(new Menu(1, "Diet Menu", "Salad, Bread with Eggs", 7.5));
 		menuList.add(new Menu(2, "Full Lunch Menu", "Chicken Thigh with rice", 10));
+		
+		orderList.add(new Order(1, "Lunch Order (5 pax)", 50));
+		orderList.add(new Order(2, "Diet Order(10 pax)", 75));
 		
 		int option = 0;
 
@@ -54,7 +58,7 @@ public class C206_CaseStudy {
 					viewAllMenu(menuList);
 					
 				else if (itemType == ITEM_TYPE_ORDER)
-					viewAllUser(userList); // Will update later
+					viewAllOrder(orderList);
 					 
 				else if (itemType == ITEM_TYPE_PAYMENT)
 					viewAllUser(userList); // Will update later
@@ -86,9 +90,13 @@ public class C206_CaseStudy {
 					// Add a menu
 					Menu menu = inputMenu();
 					addMenu(menuList, menu);
-					System.out.println("School added.");
+					System.out.println("Menu added.");
 					
 				} else if (itemType == ITEM_TYPE_ORDER) {
+					// Add an order
+					Order order = inputOrder();
+					addOrder(orderList, order);
+					System.out.println("Order added.");
 					
 				} else if (itemType == ITEM_TYPE_PAYMENT) {
 					
@@ -112,7 +120,7 @@ public class C206_CaseStudy {
 					deleteMenu(menuList);
 					
 				else if (itemType == ITEM_TYPE_ORDER)
-					deleteUser(userList); // Will update later
+					deleteOrder(orderList);
 					
 				else if (itemType == ITEM_TYPE_PAYMENT)
 					deleteUser(userList); // Will update later
@@ -221,6 +229,23 @@ public class C206_CaseStudy {
 		System.out.println(output);
 	}
 	
+	public static String retrieveAllOrder(ArrayList<Order> orderList) {
+		String output = "";
+		
+		for (int i = 0; i < orderList.size(); i++) {
+			output += String.format("%s \n", orderList.get(i).toString());
+		}
+		
+		return output;
+	}
+	
+	public static void viewAllOrder(ArrayList<Order> orderList) {
+		setHeader("ORDER LIST");
+		String output = String.format("%-5s %-29s %-10s\n", "ID", "NAME", "TOTAL COST");
+		 output += retrieveAllOrder(orderList);	
+		System.out.println(output);
+	}
+	
 	//================================= Option 2 Add (CRUD - Create) =================================
 	public static User inputUser() {		
 		int id = Helper.readInt("Enter id > ");
@@ -281,7 +306,7 @@ public class C206_CaseStudy {
 		int id = Helper.readInt("Enter id > ");
 		String name = Helper.readString("Enter menu name > ");
 		String foodItem = Helper.readString("Enter the food items in menu > ");
-		int price = Helper.readInt("Enter the total cost of items in menu > ");
+		double price = Helper.readInt("Enter the total cost of items in menu > ");
 		
 		Menu menu = new Menu(id, name, foodItem, price);
 		return menu;
@@ -302,6 +327,33 @@ public class C206_CaseStudy {
 		}
 		
 		menuList.add(menu);
+		
+	}
+	
+	public static Order inputOrder() {		
+		int id = Helper.readInt("Enter id > ");
+		String name = Helper.readString("Enter order name > ");
+		double cost = Helper.readInt("Enter the total cost of items in order > ");
+		
+		Order order = new Order(id, name, cost);
+		return order;
+		
+	}
+	
+	public static void addOrder(ArrayList<Order> orderList, Order order) {
+		Order item;
+		
+		for(int i = 0; i < orderList.size(); i++) {
+			item = orderList.get(i);
+			if (item.getId() == order.getId())
+				return;
+		}
+		
+		if ((order.getId() == 0) || (order.getName().isEmpty())) {
+			return;
+		}
+		
+		orderList.add(order);
 		
 	}
 	
@@ -393,6 +445,37 @@ public class C206_CaseStudy {
 			int arrayListId = menuList.get(i).getId();
 			if (id == arrayListId) {
 				menuList.remove(i);
+				isDeleted = true;
+			}
+		}
+		
+		return isDeleted;
+	}
+	
+	public static void deleteOrder(ArrayList<Order> orderList) {
+		viewAllOrder(orderList);
+		int id = Helper.readInt("Enter ID of order to be deleted > ");
+		
+		Boolean isDeleted = doDeleteOrder(orderList, id);
+		
+		if (isDeleted == false)
+			System.out.println("Invalid ID");
+		else
+			System.out.println("Order ID: " + id + " deleted");
+	}
+	
+	public static boolean doDeleteOrder(ArrayList<Order> orderList, int id) {
+		
+		boolean isDeleted = false;
+
+		if (id == 0)
+			return false;
+		
+		for (int i = 0; i < orderList.size(); i++) {
+					
+			int arrayListId = orderList.get(i).getId();
+			if (id == arrayListId) {
+				orderList.remove(i);
 				isDeleted = true;
 			}
 		}

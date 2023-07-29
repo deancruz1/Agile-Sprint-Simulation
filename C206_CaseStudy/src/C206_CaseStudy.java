@@ -29,8 +29,8 @@ public class C206_CaseStudy {
 		schoolList.add(new School(1, "Republic Poly", "Woodlands"));
 		schoolList.add(new School(2, "NUS", "Kent Ridge"));
 		
-		menuList.add(new Menu(1, "Diet Menu", "Salad, Bread with Eggs", 150));
-		menuList.add(new Menu(2, "Full Lunch Menu", "Chicken Thigh with rice", 400));
+		menuList.add(new Menu(1, "Diet Menu", "Salad, Bread with Eggs", 7.5));
+		menuList.add(new Menu(2, "Full Lunch Menu", "Chicken Thigh with rice", 10));
 		
 		int option = 0;
 
@@ -216,7 +216,7 @@ public class C206_CaseStudy {
 	
 	public static void viewAllMenu(ArrayList<Menu> menuList) {
 		setHeader("MENU LIST");
-		String output = String.format("%-5s %-29s %-30s %-10s\n", "ID", "NAME", "FOOD ITEMS", "CALORIES");
+		String output = String.format("%-5s %-29s %-30s %-10s\n", "ID", "NAME", "FOOD ITEMS", "PRICE");
 		 output += retrieveAllMenu(menuList);	
 		System.out.println(output);
 	}
@@ -281,9 +281,9 @@ public class C206_CaseStudy {
 		int id = Helper.readInt("Enter id > ");
 		String name = Helper.readString("Enter menu name > ");
 		String foodItem = Helper.readString("Enter the food items in menu > ");
-		int calories = Helper.readInt("Enter the total amount of calories in menu > ");
+		int price = Helper.readInt("Enter the total cost of items in menu > ");
 		
-		Menu menu = new Menu(id, name, foodItem, calories);
+		Menu menu = new Menu(id, name, foodItem, price);
 		return menu;
 		
 	}

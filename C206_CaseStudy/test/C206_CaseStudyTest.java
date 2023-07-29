@@ -30,8 +30,8 @@ public class C206_CaseStudyTest {
 		s2 = new School(2, "NUS", "Kent Ridge");
 		schoolList = new ArrayList<School>();
 		
-		m1 = new Menu(1, "Diet Menu", "Salad, Bread with Eggs", 150);
-		m2 = new Menu(2, "Full Lunch Menu", "Chicken Thigh with rice", 400);
+		m1 = new Menu(1, "Diet Menu", "Salad, Bread with Eggs", 7.5);
+		m2 = new Menu(2, "Full Lunch Menu", "Chicken Thigh with rice", 10);
 		menuList = new ArrayList<Menu>();
 	}
 
@@ -206,8 +206,8 @@ public class C206_CaseStudyTest {
 		
 		//test if the expected output string same as the list of users retrieved from the CaseStudy	
 		allMenu = C206_CaseStudy.retrieveAllMenu(menuList);
-		testOutput = String.format("%-5s %-29s %-30s %-11s\n", "1", "Diet Menu", "Salad, Bread with Eggs", "150");
-		testOutput += String.format("%-5s %-29s %-30s %-11s\n", "2", "Full Lunch Menu", "Chicken Thigh with rice", "400");
+		testOutput = String.format("%-5s %-29s %-30s %-11s\n", "1", "Diet Menu", "Salad, Bread with Eggs", "7.50");
+		testOutput += String.format("%-5s %-29s %-30s %-11s\n", "2", "Full Lunch Menu", "Chicken Thigh with rice", "10.00");
 	
 		assertEquals("Test that ViewAllSchoollist", testOutput, allMenu);
 		

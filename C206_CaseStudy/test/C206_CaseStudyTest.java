@@ -47,6 +47,10 @@ public class C206_CaseStudyTest {
 		p1 = new PaymentMethod(1, "Visa");
 		p2 = new PaymentMethod(2, "PayLah");
 		paymentList = new ArrayList<PaymentMethod>();
+		
+		v1 = new Vendor(1, "Aunt May's Bread", "Bread");
+		v2 = new Vendor(2, "Fan Fan Cai Png", "Cai Png");
+		vendorList = new ArrayList<Vendor>();
 	}
 
 	@After
@@ -69,7 +73,11 @@ public class C206_CaseStudyTest {
 		
 		p1 = null;
 		p2 = null;
-		paymentList = null;
+		paymentList = null;;
+		
+		v1 = null;
+		v2 = null;
+		vendorList = null;
 	}
 
 	@Test
@@ -285,7 +293,7 @@ public class C206_CaseStudyTest {
 		//test if the list of orders retrieved from the CaseStudy is empty - boundary
 		String allOrder = C206_CaseStudy.retrieveAllOrder(orderList);
 		String testOutput = "";
-		assertEquals("Check that ViewAllMenuList", testOutput, allOrder);
+		assertEquals("Check that ViewAllOrderList", testOutput, allOrder);
 		
 		//Given an empty list, after adding 2 items, test if the size of the list is 2 - normal
 		C206_CaseStudy.addOrder(orderList, o1);
@@ -309,7 +317,7 @@ public class C206_CaseStudyTest {
 		//The item just added is as same as the first item of the list
 		C206_CaseStudy.addOrder(orderList, o1);
 		assertEquals("Check that Order arraylist size is 1", 1, orderList.size());
-		assertSame("Check that SOrder is added", o1, orderList.get(0));
+		assertSame("Check that Order is added", o1, orderList.get(0));
 		
 		//Add another item. test The size of the list is 2? -normal
 		//The item just added is as same as the second item of the list
@@ -348,10 +356,10 @@ public class C206_CaseStudyTest {
 		// Test if Item list is not null but empty -boundary
 		assertNotNull("Test if there is valid Menu arraylist to retrieve item", paymentList);
 		
-		//test if the list of orders retrieved from the CaseStudy is empty - boundary
+		//test if the list of payment methods retrieved from the CaseStudy is empty - boundary
 		String allPayment = C206_CaseStudy.retrieveAllPayment(paymentList);
 		String testOutput = "";
-		assertEquals("Check that ViewAllMenuList", testOutput, allPayment);
+		assertEquals("Check that ViewAllPaymentMethodList", testOutput, allPayment);
 		
 		//Given an empty list, after adding 2 items, test if the size of the list is 2 - normal
 		C206_CaseStudy.addPayment(paymentList, p1);
@@ -363,7 +371,7 @@ public class C206_CaseStudyTest {
 		testOutput = String.format("%-5s %-31s\n", "1", "Visa");
 		testOutput += String.format("%-5s %-31s\n", "2", "PayLah");
 	
-		assertEquals("Test that ViewAllOrderlist", testOutput, allPayment);
+		assertEquals("Test that ViewAllPaymentMethodlist", testOutput, allPayment);
 		
 	}
 	
@@ -405,6 +413,72 @@ public class C206_CaseStudyTest {
 		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
 		//error condition
 		ok = C206_CaseStudy.doDeletePayment(paymentList, 3);
+		assertFalse("Test that non-existing item is NOT ok to delete?", ok);
+		
+	}
+	
+	@Test
+	public void testRetrieveAllVendor() {
+		// Test if Item list is not null but empty -boundary
+		assertNotNull("Test if there is valid Menu arraylist to retrieve item", vendorList);
+		
+		//test if the list of vendor retrieved from the CaseStudy is empty - boundary
+		String allVendor = C206_CaseStudy.retrieveAllVendor(vendorList);
+		String testOutput = "";
+		assertEquals("Check that ViewAllVendorList", testOutput, allVendor);
+		
+		//Given an empty list, after adding 2 items, test if the size of the list is 2 - normal
+		C206_CaseStudy.addVendor(vendorList, v1);
+		C206_CaseStudy.addVendor(vendorList, v2);
+		assertEquals("Test that Vendor ArrayList size is 2", 2, vendorList.size());
+		
+		//test if the expected output string same as the list of users retrieved from the CaseStudy	
+		allVendor = C206_CaseStudy.retrieveAllVendor(vendorList);
+		testOutput = String.format("%-5s %-29s %-11s\n", "1", "Aunt May's Bread", "Bread");
+		testOutput += String.format("%-5s %-29s %-11s\n", "2", "Fan Fan Cai Png", "Cai Png");
+	
+		assertEquals("Test that ViewAllOrderlist", testOutput, allVendor);
+		
+	}
+	
+	@Test
+	public void testAddVendor() {
+		// Item list is not null, so that can add a new item - boundary
+		assertNotNull("Check if there is valid Vendor arraylist to add to", vendorList);
+		//Given an empty list, after adding 1 item, the size of the list is 1 - normal
+		//The item just added is as same as the first item of the list
+		C206_CaseStudy.addVendor(vendorList, v1);
+		assertEquals("Check that Vendor arraylist size is 1", 1, vendorList.size());
+		assertSame("Check that Vendor is added", v1, vendorList.get(0));
+		
+		//Add another item. test The size of the list is 2? -normal
+		//The item just added is as same as the second item of the list
+		C206_CaseStudy.addVendor(vendorList, v2);
+		assertEquals("Check that Vendor arraylist size is 2", 2, vendorList.size());
+		assertSame("Check that Vendor is added", v2, vendorList.get(1));
+	}
+	
+	@Test
+	public void testDoDeleteVendor() {
+		//boundary
+		assertNotNull("test if there is valid vendor arraylist to delete from", vendorList);
+		
+		C206_CaseStudy.addVendor(vendorList, v1);
+		// normal
+		Boolean ok = C206_CaseStudy.doDeleteVendor(vendorList, 1);
+		assertTrue("Test if vendor can be deleted?", ok);
+		// normal
+		C206_CaseStudy.addVendor(vendorList, v2);	
+		ok = C206_CaseStudy.doDeleteVendor(vendorList, 2);
+		assertTrue("Test that second item is ok to delete?", ok);
+		//error condition
+		ok = C206_CaseStudy.doDeleteVendor(vendorList, 1);
+		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
+		//error condition
+		ok = C206_CaseStudy.doDeleteVendor(vendorList, 2);
+		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
+		//error condition
+		ok = C206_CaseStudy.doDeleteVendor(vendorList, 3);
 		assertFalse("Test that non-existing item is NOT ok to delete?", ok);
 		
 	}

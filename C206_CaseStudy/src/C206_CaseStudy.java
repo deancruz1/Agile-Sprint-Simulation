@@ -41,6 +41,9 @@ public class C206_CaseStudy {
 		paymentList.add(new PaymentMethod(1, "Visa"));
 		paymentList.add(new PaymentMethod(2, "PayLah"));
 		
+		vendorList.add(new Vendor(1, "Aunt May's Bread", "Bread"));
+		vendorList.add(new Vendor(2, "Fan Fan Cai Png", "Cai Png"));
+		
 		int option = 0;
 
 		while (option != OPTION_QUIT) {
@@ -69,7 +72,7 @@ public class C206_CaseStudy {
 					viewAllPayment(paymentList); 
 				
 				else if (itemType == ITEM_TYPE_VENDOR)
-					viewAllUser(userList); // Will update later
+					viewAllVendor(vendorList);
 					
 				else
 					System.out.println("Invalid Type.");
@@ -110,6 +113,10 @@ public class C206_CaseStudy {
 					System.out.println("Payment Method added.");
 					
 				} else if (itemType == ITEM_TYPE_VENDOR) {
+					// Add a Vendor
+					Vendor vendor = inputVendor();
+					addVendor(vendorList, vendor);
+					System.out.println("Vendor added.");
 					
 				} else
 					System.out.println("Invalid Type.");
@@ -135,7 +142,7 @@ public class C206_CaseStudy {
 					deletePayment(paymentList);
 				
 				else if (itemType == ITEM_TYPE_VENDOR)
-					deleteUser(userList); // Will update later
+					deleteVendor(vendorList);
 					
 				else
 					System.out.println("Invalid Type.");
@@ -269,6 +276,23 @@ public class C206_CaseStudy {
 		setHeader("PAYMENT METHOD LIST");
 		String output = String.format("%-5s %-29s\n", "ID", "PAYMENT METHOD");
 		 output += retrieveAllPayment(paymentList);	
+		System.out.println(output);
+	}
+	
+	public static String retrieveAllVendor(ArrayList<Vendor> vendorList) {
+		String output = "";
+		
+		for (int i = 0; i < vendorList.size(); i++) {
+			output += String.format("%s \n", vendorList.get(i).toString());
+		}
+		
+		return output;
+	}
+	
+	public static void viewAllVendor(ArrayList<Vendor> vendorList) {
+		setHeader("VENDOR LIST");
+		String output = String.format("%-5s %-29s %-10s\n", "ID", "NAME", "SPECIALTY");
+		 output += retrieveAllVendor(vendorList);	
 		System.out.println(output);
 	}
 	
@@ -406,6 +430,33 @@ public class C206_CaseStudy {
 		}
 		
 		paymentList.add(paymentMethod);
+		
+	}
+	
+	public static Vendor inputVendor() {		
+		int id = Helper.readInt("Enter id > ");
+		String name = Helper.readString("Enter vendor name > ");
+		String specialty = Helper.readString("Enter vendor's specialty > ");
+		
+		Vendor vendor = new Vendor(id, name, specialty);
+		return vendor;
+		
+	}
+	
+	public static void addVendor(ArrayList<Vendor> vendorList, Vendor vendor) {
+		Vendor item;
+		
+		for(int i = 0; i < vendorList.size(); i++) {
+			item = vendorList.get(i);
+			if (item.getId() == vendor.getId())
+				return;
+		}
+		
+		if ((vendor.getId() == 0) || (vendor.getName().isEmpty())) {
+			return;
+		}
+		
+		vendorList.add(vendor);
 		
 	}
 	
@@ -558,6 +609,37 @@ public class C206_CaseStudy {
 			int arrayListId = paymentList.get(i).getId();
 			if (id == arrayListId) {
 				paymentList.remove(i);
+				isDeleted = true;
+			}
+		}
+		
+		return isDeleted;
+	}
+	
+	public static void deleteVendor(ArrayList<Vendor> vendorList) {
+		viewAllVendor(vendorList);
+		int id = Helper.readInt("Enter ID of vendor to be deleted > ");
+		
+		Boolean isDeleted = doDeleteVendor(vendorList, id);
+		
+		if (isDeleted == false)
+			System.out.println("Invalid ID");
+		else
+			System.out.println("Vendor ID: " + id + " deleted");
+	}
+	
+	public static boolean doDeleteVendor(ArrayList<Vendor> vendorList, int id) {
+		
+		boolean isDeleted = false;
+
+		if (id == 0)
+			return false;
+		
+		for (int i = 0; i < vendorList.size(); i++) {
+					
+			int arrayListId = vendorList.get(i).getId();
+			if (id == arrayListId) {
+				vendorList.remove(i);
 				isDeleted = true;
 			}
 		}

@@ -22,6 +22,8 @@ public class C206_CaseStudy {
 		ArrayList<School> schoolList = new ArrayList<School>();
 		ArrayList<Menu> menuList = new ArrayList<Menu>();
 		ArrayList<Order> orderList = new ArrayList<Order>();
+		ArrayList<PaymentMethod> paymentList = new ArrayList<PaymentMethod>();
+		ArrayList<Vendor> vendorList = new ArrayList<Vendor>();
 		
 		// Add initial objects to ArrayList
 		userList.add(new User(1, "Peter Tan", 32, "Parent"));
@@ -35,6 +37,9 @@ public class C206_CaseStudy {
 		
 		orderList.add(new Order(1, "Lunch Order (5 pax)", 50));
 		orderList.add(new Order(2, "Diet Order(10 pax)", 75));
+		
+		paymentList.add(new PaymentMethod(1, "Visa"));
+		paymentList.add(new PaymentMethod(2, "PayLah"));
 		
 		int option = 0;
 
@@ -61,8 +66,8 @@ public class C206_CaseStudy {
 					viewAllOrder(orderList);
 					 
 				else if (itemType == ITEM_TYPE_PAYMENT)
-					viewAllUser(userList); // Will update later
-					
+					viewAllPayment(paymentList); 
+				
 				else if (itemType == ITEM_TYPE_VENDOR)
 					viewAllUser(userList); // Will update later
 					
@@ -99,6 +104,10 @@ public class C206_CaseStudy {
 					System.out.println("Order added.");
 					
 				} else if (itemType == ITEM_TYPE_PAYMENT) {
+					// Add a Payment Method
+					PaymentMethod paymentMethod = inputPayment();
+					addPayment(paymentList, paymentMethod);
+					System.out.println("Payment Method added.");
 					
 				} else if (itemType == ITEM_TYPE_VENDOR) {
 					
@@ -123,7 +132,7 @@ public class C206_CaseStudy {
 					deleteOrder(orderList);
 					
 				else if (itemType == ITEM_TYPE_PAYMENT)
-					deleteUser(userList); // Will update later
+					deletePayment(paymentList);
 				
 				else if (itemType == ITEM_TYPE_VENDOR)
 					deleteUser(userList); // Will update later
@@ -246,6 +255,23 @@ public class C206_CaseStudy {
 		System.out.println(output);
 	}
 	
+	public static String retrieveAllPayment(ArrayList<PaymentMethod> paymentList) {
+		String output = "";
+		
+		for (int i = 0; i < paymentList.size(); i++) {
+			output += String.format("%s \n", paymentList.get(i).toString());
+		}
+		
+		return output;
+	}
+	
+	public static void viewAllPayment(ArrayList<PaymentMethod> paymentList) {
+		setHeader("PAYMENT METHOD LIST");
+		String output = String.format("%-5s %-29s\n", "ID", "PAYMENT METHOD");
+		 output += retrieveAllPayment(paymentList);	
+		System.out.println(output);
+	}
+	
 	//================================= Option 2 Add (CRUD - Create) =================================
 	public static User inputUser() {		
 		int id = Helper.readInt("Enter id > ");
@@ -357,6 +383,31 @@ public class C206_CaseStudy {
 		
 	}
 	
+	public static PaymentMethod inputPayment() {		
+		int id = Helper.readInt("Enter id > ");
+		String name = Helper.readString("Enter payment method name > ");
+		
+		PaymentMethod paymentMethod = new PaymentMethod(id, name);
+		return paymentMethod;
+		
+	}
+	
+	public static void addPayment(ArrayList<PaymentMethod> paymentList, PaymentMethod paymentMethod) {
+		PaymentMethod item;
+		
+		for(int i = 0; i < paymentList.size(); i++) {
+			item = paymentList.get(i);
+			if (item.getId() == paymentMethod.getId())
+				return;
+		}
+		
+		if ((paymentMethod.getId() == 0) || (paymentMethod.getName().isEmpty())) {
+			return;
+		}
+		
+		paymentList.add(paymentMethod);
+		
+	}
 	
 	//================================= Option 3 Delete (CRUD - Delete) =================================
 	public static void deleteUser(ArrayList<User> userList) {
@@ -483,6 +534,37 @@ public class C206_CaseStudy {
 		return isDeleted;
 	}
 		
+	public static void deletePayment(ArrayList<PaymentMethod> paymentList) {
+		viewAllPayment(paymentList);
+		int id = Helper.readInt("Enter ID of payment method to be deleted > ");
+		
+		Boolean isDeleted = doDeletePayment(paymentList, id);
+		
+		if (isDeleted == false)
+			System.out.println("Invalid ID");
+		else
+			System.out.println("Payment Method ID: " + id + " deleted");
+	}
+	
+	public static boolean doDeletePayment(ArrayList<PaymentMethod> paymentList, int id) {
+		
+		boolean isDeleted = false;
+
+		if (id == 0)
+			return false;
+		
+		for (int i = 0; i < paymentList.size(); i++) {
+					
+			int arrayListId = paymentList.get(i).getId();
+			if (id == arrayListId) {
+				paymentList.remove(i);
+				isDeleted = true;
+			}
+		}
+		
+		return isDeleted;
+	}
+	
 }
 
 

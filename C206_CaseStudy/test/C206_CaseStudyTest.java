@@ -11,11 +11,15 @@ public class C206_CaseStudyTest {
 	private School s1, s2;
 	private Menu m1, m2;
 	private Order o1, o2;
+	private PaymentMethod p1, p2;
+	private Vendor v1, v2;
 	
 	private ArrayList<User> userList;
 	private ArrayList<School> schoolList;
 	private ArrayList<Menu> menuList;
 	private ArrayList<Order> orderList;
+	private ArrayList<PaymentMethod> paymentList;
+	private ArrayList<Vendor> vendorList;
 	
 	public C206_CaseStudyTest() {
 		super();
@@ -39,6 +43,10 @@ public class C206_CaseStudyTest {
 		o1 = new Order(1, "Lunch Order (5 pax)", 50);
 		o2 = new Order(2, "Diet Order(10 pax)", 75);
 		orderList = new ArrayList<Order>();
+		
+		p1 = new PaymentMethod(1, "Visa");
+		p2 = new PaymentMethod(2, "PayLah");
+		paymentList = new ArrayList<PaymentMethod>();
 	}
 
 	@After
@@ -58,6 +66,10 @@ public class C206_CaseStudyTest {
 		o1 = null;
 		o2 = null;
 		orderList = null;
+		
+		p1 = null;
+		p2 = null;
+		paymentList = null;
 	}
 
 	@Test
@@ -268,7 +280,7 @@ public class C206_CaseStudyTest {
 	@Test
 	public void testRetrieveAllOrder() {
 		// Test if Item list is not null but empty -boundary
-		assertNotNull("Test if there is valid Menu arraylist to retrieve item", orderList);
+		assertNotNull("Test if there is valid Order arraylist to retrieve item", orderList);
 		
 		//test if the list of orders retrieved from the CaseStudy is empty - boundary
 		String allOrder = C206_CaseStudy.retrieveAllOrder(orderList);
@@ -327,6 +339,72 @@ public class C206_CaseStudyTest {
 		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
 		//error condition
 		ok = C206_CaseStudy.doDeleteOrder(orderList, 3 );
+		assertFalse("Test that non-existing item is NOT ok to delete?", ok);
+		
+	}
+	
+	@Test
+	public void testRetrieveAllPayment() {
+		// Test if Item list is not null but empty -boundary
+		assertNotNull("Test if there is valid Menu arraylist to retrieve item", paymentList);
+		
+		//test if the list of orders retrieved from the CaseStudy is empty - boundary
+		String allPayment = C206_CaseStudy.retrieveAllPayment(paymentList);
+		String testOutput = "";
+		assertEquals("Check that ViewAllMenuList", testOutput, allPayment);
+		
+		//Given an empty list, after adding 2 items, test if the size of the list is 2 - normal
+		C206_CaseStudy.addPayment(paymentList, p1);
+		C206_CaseStudy.addPayment(paymentList, p2);
+		assertEquals("Test that Payment ArrayList size is 2", 2, paymentList.size());
+		
+		//test if the expected output string same as the list of users retrieved from the CaseStudy	
+		allPayment = C206_CaseStudy.retrieveAllPayment(paymentList);
+		testOutput = String.format("%-5s %-31s\n", "1", "Visa");
+		testOutput += String.format("%-5s %-31s\n", "2", "PayLah");
+	
+		assertEquals("Test that ViewAllOrderlist", testOutput, allPayment);
+		
+	}
+	
+	@Test
+	public void testAddPayment() {
+		// Item list is not null, so that can add a new item - boundary
+		assertNotNull("Check if there is valid Payment arraylist to add to", paymentList);
+		//Given an empty list, after adding 1 item, the size of the list is 1 - normal
+		//The item just added is as same as the first item of the list
+		C206_CaseStudy.addPayment(paymentList, p1);
+		assertEquals("Check that Payment arraylist size is 1", 1, paymentList.size());
+		assertSame("Check that PaymentMethod is added", p1, paymentList.get(0));
+		
+		//Add another item. test The size of the list is 2? -normal
+		//The item just added is as same as the second item of the list
+		C206_CaseStudy.addPayment(paymentList, p2);
+		assertEquals("Check that Payment arraylist size is 2", 2, paymentList.size());
+		assertSame("Check that Payment is added", p2, paymentList.get(1));
+	}
+	
+	@Test
+	public void testDoDeletePayment() {
+		//boundary
+		assertNotNull("test if there is valid payment arraylist to delete from", paymentList);
+		
+		C206_CaseStudy.addPayment(paymentList, p1);
+		// normal
+		Boolean ok = C206_CaseStudy.doDeletePayment(paymentList, 1);
+		assertTrue("Test if payment method can be deleted?", ok);
+		// normal
+		C206_CaseStudy.addPayment(paymentList, p2);	
+		ok = C206_CaseStudy.doDeletePayment(paymentList, 2);
+		assertTrue("Test that second item is ok to delete?", ok);
+		//error condition
+		ok = C206_CaseStudy.doDeletePayment(paymentList, 1);
+		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
+		//error condition
+		ok = C206_CaseStudy.doDeletePayment(paymentList, 2);
+		assertFalse("Test if an same item is NOT ok to delete again?", ok);	
+		//error condition
+		ok = C206_CaseStudy.doDeletePayment(paymentList, 3);
 		assertFalse("Test that non-existing item is NOT ok to delete?", ok);
 		
 	}
